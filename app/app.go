@@ -86,6 +86,12 @@ import (
 	"github.com/lubtd/ibclab/x/ibclab"
 	ibclabkeeper "github.com/lubtd/ibclab/x/ibclab/keeper"
 	ibclabtypes "github.com/lubtd/ibclab/x/ibclab/types"
+	"github.com/lubtd/ibclab/x/spn"
+	spnkeeper "github.com/lubtd/ibclab/x/spn/keeper"
+	spntypes "github.com/lubtd/ibclab/x/spn/types"
+	"github.com/lubtd/ibclab/x/testnet"
+	testnetkeeper "github.com/lubtd/ibclab/x/testnet/keeper"
+	testnettypes "github.com/lubtd/ibclab/x/testnet/types"
 )
 
 const Name = "ibclab"
@@ -132,6 +138,8 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
+		testnet.AppModuleBasic{},
+		spn.AppModuleBasic{},
 		ibclab.AppModuleBasic{},
 	)
 
@@ -199,6 +207,10 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
+	ScopedTestnetKeeper capabilitykeeper.ScopedKeeper
+	TestnetKeeper       testnetkeeper.Keeper
+	ScopedSpnKeeper     capabilitykeeper.ScopedKeeper
+	SpnKeeper           spnkeeper.Keeper
 
 	IbclabKeeper ibclabkeeper.Keeper
 
@@ -230,6 +242,8 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
+		testnettypes.StoreKey,
+		spntypes.StoreKey,
 		ibclabtypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -322,6 +336,28 @@ func New(
 	app.EvidenceKeeper = *evidenceKeeper
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
+	scopedTestnetKeeper := app.CapabilityKeeper.ScopeToModule(testnettypes.ModuleName)
+	app.ScopedTestnetKeeper = scopedTestnetKeeper
+	app.TestnetKeeper = *testnetkeeper.NewKeeper(
+		appCodec,
+		keys[testnettypes.StoreKey],
+		keys[testnettypes.MemStoreKey],
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedTestnetKeeper,
+	)
+	testnetModule := testnet.NewAppModule(appCodec, app.TestnetKeeper)
+	scopedSpnKeeper := app.CapabilityKeeper.ScopeToModule(spntypes.ModuleName)
+	app.ScopedSpnKeeper = scopedSpnKeeper
+	app.SpnKeeper = *spnkeeper.NewKeeper(
+		appCodec,
+		keys[spntypes.StoreKey],
+		keys[spntypes.MemStoreKey],
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedSpnKeeper,
+	)
+	spnModule := spn.NewAppModule(appCodec, app.SpnKeeper)
 
 	app.IbclabKeeper = *ibclabkeeper.NewKeeper(
 		appCodec,
@@ -339,6 +375,8 @@ func New(
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
 	// this line is used by starport scaffolding # ibc/app/router
+	ibcRouter.AddRoute(testnettypes.ModuleName, testnetModule)
+	ibcRouter.AddRoute(spntypes.ModuleName, spnModule)
 	app.IBCKeeper.SetRouter(ibcRouter)
 
 	/****  Module Options ****/
@@ -371,6 +409,8 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
+		testnetModule,
+		spnModule,
 		ibclabModule,
 	)
 
@@ -405,6 +445,8 @@ func New(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+		testnettypes.ModuleName,
+		spntypes.ModuleName,
 		ibclabtypes.ModuleName,
 	)
 
@@ -589,6 +631,8 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(testnettypes.ModuleName)
+	paramsKeeper.Subspace(spntypes.ModuleName)
 	paramsKeeper.Subspace(ibclabtypes.ModuleName)
 
 	return paramsKeeper
