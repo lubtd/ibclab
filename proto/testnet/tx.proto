@@ -8,6 +8,16 @@ option go_package = "github.com/lubtd/ibclab/x/testnet/types";
 // Msg defines the Msg service.
 service Msg {
     // this line is used by starport scaffolding # proto/tx/rpc
+  rpc SendFoo(MsgSendFoo) returns (MsgSendFooResponse);
 }
 
 // this line is used by starport scaffolding # proto/tx/message
+message MsgSendFoo {
+  string sender = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+}
+
+message MsgSendFooResponse {
+}

@@ -25,6 +25,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type SpnPacketData struct {
 	// Types that are valid to be assigned to Packet:
 	//	*SpnPacketData_NoData
+	//	*SpnPacketData_FooPacket
 	Packet isSpnPacketData_Packet `protobuf_oneof:"packet"`
 }
 
@@ -70,8 +71,12 @@ type isSpnPacketData_Packet interface {
 type SpnPacketData_NoData struct {
 	NoData *NoData `protobuf:"bytes,1,opt,name=noData,proto3,oneof" json:"noData,omitempty"`
 }
+type SpnPacketData_FooPacket struct {
+	FooPacket *FooPacketData `protobuf:"bytes,2,opt,name=fooPacket,proto3,oneof" json:"fooPacket,omitempty"`
+}
 
-func (*SpnPacketData_NoData) isSpnPacketData_Packet() {}
+func (*SpnPacketData_NoData) isSpnPacketData_Packet()    {}
+func (*SpnPacketData_FooPacket) isSpnPacketData_Packet() {}
 
 func (m *SpnPacketData) GetPacket() isSpnPacketData_Packet {
 	if m != nil {
@@ -87,10 +92,18 @@ func (m *SpnPacketData) GetNoData() *NoData {
 	return nil
 }
 
+func (m *SpnPacketData) GetFooPacket() *FooPacketData {
+	if x, ok := m.GetPacket().(*SpnPacketData_FooPacket); ok {
+		return x.FooPacket
+	}
+	return nil
+}
+
 // XXX_OneofWrappers is for the internal use of the proto package.
 func (*SpnPacketData) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*SpnPacketData_NoData)(nil),
+		(*SpnPacketData_FooPacket)(nil),
 	}
 }
 
@@ -130,26 +143,106 @@ func (m *NoData) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_NoData proto.InternalMessageInfo
 
+// this line is used by starport scaffolding # ibc/packet/proto/message
+// FooPacketData defines a struct for the packet payload
+type FooPacketData struct {
+}
+
+func (m *FooPacketData) Reset()         { *m = FooPacketData{} }
+func (m *FooPacketData) String() string { return proto.CompactTextString(m) }
+func (*FooPacketData) ProtoMessage()    {}
+func (*FooPacketData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7b0e9c5c31b23e4c, []int{2}
+}
+func (m *FooPacketData) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *FooPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_FooPacketData.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *FooPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FooPacketData.Merge(m, src)
+}
+func (m *FooPacketData) XXX_Size() int {
+	return m.Size()
+}
+func (m *FooPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_FooPacketData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FooPacketData proto.InternalMessageInfo
+
+// FooPacketAck defines a struct for the packet acknowledgment
+type FooPacketAck struct {
+}
+
+func (m *FooPacketAck) Reset()         { *m = FooPacketAck{} }
+func (m *FooPacketAck) String() string { return proto.CompactTextString(m) }
+func (*FooPacketAck) ProtoMessage()    {}
+func (*FooPacketAck) Descriptor() ([]byte, []int) {
+	return fileDescriptor_7b0e9c5c31b23e4c, []int{3}
+}
+func (m *FooPacketAck) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *FooPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_FooPacketAck.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *FooPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FooPacketAck.Merge(m, src)
+}
+func (m *FooPacketAck) XXX_Size() int {
+	return m.Size()
+}
+func (m *FooPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_FooPacketAck.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FooPacketAck proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*SpnPacketData)(nil), "lubtd.ibclab.spn.SpnPacketData")
 	proto.RegisterType((*NoData)(nil), "lubtd.ibclab.spn.NoData")
+	proto.RegisterType((*FooPacketData)(nil), "lubtd.ibclab.spn.FooPacketData")
+	proto.RegisterType((*FooPacketAck)(nil), "lubtd.ibclab.spn.FooPacketAck")
 }
 
 func init() { proto.RegisterFile("spn/packet.proto", fileDescriptor_7b0e9c5c31b23e4c) }
 
 var fileDescriptor_7b0e9c5c31b23e4c = []byte{
-	// 175 bytes of a gzipped FileDescriptorProto
+	// 215 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x28, 0x2e, 0xc8, 0xd3,
 	0x2f, 0x48, 0x4c, 0xce, 0x4e, 0x2d, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0xc8, 0x29,
-	0x4d, 0x2a, 0x49, 0xd1, 0xcb, 0x4c, 0x4a, 0xce, 0x49, 0x4c, 0xd2, 0x2b, 0x2e, 0xc8, 0x53, 0xf2,
-	0xe5, 0xe2, 0x0d, 0x2e, 0xc8, 0x0b, 0x00, 0x2b, 0x72, 0x49, 0x2c, 0x49, 0x14, 0x32, 0xe2, 0x62,
-	0xcb, 0xcb, 0x07, 0xb1, 0x24, 0x18, 0x15, 0x18, 0x35, 0xb8, 0x8d, 0x24, 0xf4, 0xd0, 0xf5, 0xe8,
-	0xf9, 0x81, 0xe5, 0x3d, 0x18, 0x82, 0xa0, 0x2a, 0x9d, 0x38, 0xb8, 0xd8, 0x20, 0xd6, 0x28, 0x71,
-	0x70, 0xb1, 0x41, 0x64, 0x9d, 0x6c, 0x4f, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1,
-	0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58, 0x8e, 0x21,
-	0x4a, 0x39, 0x3d, 0xb3, 0x24, 0xa3, 0x34, 0x49, 0x2f, 0x39, 0x3f, 0x57, 0x1f, 0x6c, 0xb6, 0x3e,
-	0xc4, 0x6c, 0xfd, 0x0a, 0x7d, 0x90, 0x83, 0x4b, 0x2a, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x0e,
-	0x36, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x0c, 0x81, 0x0c, 0xcf, 0xc4, 0x00, 0x00, 0x00,
+	0x4d, 0x2a, 0x49, 0xd1, 0xcb, 0x4c, 0x4a, 0xce, 0x49, 0x4c, 0xd2, 0x2b, 0x2e, 0xc8, 0x53, 0xea,
+	0x63, 0xe4, 0xe2, 0x0d, 0x2e, 0xc8, 0x0b, 0x00, 0xab, 0x72, 0x49, 0x2c, 0x49, 0x14, 0x32, 0xe2,
+	0x62, 0xcb, 0xcb, 0x07, 0xb1, 0x24, 0x18, 0x15, 0x18, 0x35, 0xb8, 0x8d, 0x24, 0xf4, 0xd0, 0x35,
+	0xe9, 0xf9, 0x81, 0xe5, 0x3d, 0x18, 0x82, 0xa0, 0x2a, 0x85, 0xec, 0xb9, 0x38, 0xd3, 0xf2, 0xf3,
+	0x21, 0x86, 0x48, 0x30, 0x81, 0xb5, 0xc9, 0x63, 0x6a, 0x73, 0x83, 0x29, 0x81, 0xea, 0x46, 0xe8,
+	0x71, 0xe2, 0xe0, 0x62, 0x83, 0x38, 0x54, 0x89, 0x83, 0x8b, 0x0d, 0x62, 0xbc, 0x12, 0x3f, 0x17,
+	0x2f, 0x8a, 0x0e, 0x25, 0x3e, 0x2e, 0x1e, 0xb8, 0x80, 0x63, 0x72, 0xb6, 0x93, 0xed, 0x89, 0x47,
+	0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85,
+	0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0x29, 0xa7, 0x67, 0x96, 0x64, 0x94, 0x26, 0xe9,
+	0x25, 0xe7, 0xe7, 0xea, 0x83, 0x9d, 0xa1, 0x0f, 0x71, 0x86, 0x7e, 0x85, 0x3e, 0x28, 0x4c, 0x4a,
+	0x2a, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x61, 0x62, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0xc7,
+	0xcd, 0x46, 0xd3, 0x27, 0x01, 0x00, 0x00,
 }
 
 func (m *SpnPacketData) Marshal() (dAtA []byte, err error) {
@@ -205,6 +298,27 @@ func (m *SpnPacketData_NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	return len(dAtA) - i, nil
 }
+func (m *SpnPacketData_FooPacket) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SpnPacketData_FooPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.FooPacket != nil {
+		{
+			size, err := m.FooPacket.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPacket(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	return len(dAtA) - i, nil
+}
 func (m *NoData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -221,6 +335,52 @@ func (m *NoData) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *FooPacketData) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FooPacketData) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *FooPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *FooPacketAck) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FooPacketAck) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *FooPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -263,7 +423,37 @@ func (m *SpnPacketData_NoData) Size() (n int) {
 	}
 	return n
 }
+func (m *SpnPacketData_FooPacket) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.FooPacket != nil {
+		l = m.FooPacket.Size()
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	return n
+}
 func (m *NoData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *FooPacketData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *FooPacketAck) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -342,6 +532,41 @@ func (m *SpnPacketData) Unmarshal(dAtA []byte) error {
 			}
 			m.Packet = &SpnPacketData_NoData{v}
 			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FooPacket", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &FooPacketData{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Packet = &SpnPacketData_FooPacket{v}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipPacket(dAtA[iNdEx:])
@@ -390,6 +615,106 @@ func (m *NoData) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: NoData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *FooPacketData) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: FooPacketData: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: FooPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *FooPacketAck) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: FooPacketAck: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: FooPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
