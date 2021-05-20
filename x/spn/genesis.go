@@ -10,6 +10,10 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// this line is used by starport scaffolding # genesis/module/init
+	// Set all the testnetState
+	for _, elem := range genState.TestnetStateList {
+		k.SetTestnetState(ctx, *elem)
+	}
 
 	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -29,6 +33,12 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 
 	// this line is used by starport scaffolding # genesis/module/export
+	// Get all testnetState
+	testnetStateList := k.GetAllTestnetState(ctx)
+	for _, elem := range testnetStateList {
+		elem := elem
+		genesis.TestnetStateList = append(genesis.TestnetStateList, &elem)
+	}
 
 	genesis.PortId = k.GetPort(ctx)
 

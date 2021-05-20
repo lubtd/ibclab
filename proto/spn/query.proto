@@ -4,12 +4,36 @@ package lubtd.ibclab.spn;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
+import "spn/testnetState.proto";
 
 option go_package = "github.com/lubtd/ibclab/x/spn/types";
 
 // Query defines the gRPC querier service.
 service Query {
     // this line is used by starport scaffolding # 2
+	rpc TestnetState(QueryGetTestnetStateRequest) returns (QueryGetTestnetStateResponse) {
+		option (google.api.http).get = "/lubtd/ibclab/spn/testnetState/{index}";
+	}
+	rpc TestnetStateAll(QueryAllTestnetStateRequest) returns (QueryAllTestnetStateResponse) {
+		option (google.api.http).get = "/lubtd/ibclab/spn/testnetState";
+	}
+
 }
 
 // this line is used by starport scaffolding # 3
+message QueryGetTestnetStateRequest {
+	string index = 1;
+}
+
+message QueryGetTestnetStateResponse {
+	TestnetState TestnetState = 1;
+}
+
+message QueryAllTestnetStateRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllTestnetStateResponse {
+	repeated TestnetState TestnetState = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

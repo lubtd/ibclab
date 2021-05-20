@@ -1,0 +1,11 @@
+syntax = "proto3";
+package lubtd.ibclab.spn;
+
+option go_package = "github.com/lubtd/ibclab/x/spn/types";
+
+import "gogoproto/gogo.proto";
+
+message TestnetState {
+  string creator = 1;
+  string index = 2;
+}
