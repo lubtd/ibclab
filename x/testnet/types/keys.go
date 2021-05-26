@@ -17,7 +17,7 @@ const (
 	MemStoreKey = "mem_testnet"
 
 	// Version defines the current version the IBC module supports
-	Version = "testnet-1"
+	Version = "ibclab-1"
 
 	// PortID is the default port id that module binds to
 	PortID = "testnet"
