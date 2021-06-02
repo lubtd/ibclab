@@ -9,7 +9,7 @@ import (
 // SetTestnetState set a specific testnetState in the store from its index
 func (k Keeper) SetTestnetState(ctx sdk.Context, testnetState types.TestnetState) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TestnetStateKey))
-	b := k.cdc.MustMarshalBinaryBare(&testnetState)
+	b := k.cdc.MustMarshal(&testnetState)
 	store.Set(types.KeyPrefix(testnetState.Index), b)
 }
 
@@ -22,7 +22,7 @@ func (k Keeper) GetTestnetState(ctx sdk.Context, index string) (val types.Testne
 		return val, false
 	}
 
-	k.cdc.MustUnmarshalBinaryBare(b, &val)
+	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
 
@@ -41,7 +41,7 @@ func (k Keeper) GetAllTestnetState(ctx sdk.Context) (list []types.TestnetState) 
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.TestnetState
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
 

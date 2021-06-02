@@ -13,22 +13,24 @@ import (
 
 type (
 	Keeper struct {
-		cdc           codec.Marshaler
+		cdc           codec.BinaryCodec
 		storeKey      sdk.StoreKey
 		memKey        sdk.StoreKey
 		channelKeeper types.ChannelKeeper
 		portKeeper    types.PortKeeper
 		scopedKeeper  types.ScopedKeeper
+		stakingKeeper types.StakingKeeper
 	}
 )
 
 func NewKeeper(
-	cdc codec.Marshaler,
+	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	scopedKeeper types.ScopedKeeper,
+	stakingKeeper types.StakingKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:           cdc,
@@ -37,9 +39,16 @@ func NewKeeper(
 		channelKeeper: channelKeeper,
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
+		stakingKeeper: stakingKeeper,
 	}
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+
+func (k Keeper) GetBondedValidatorCount(ctx sdk.Context) int {
+	vals := k.stakingKeeper.GetBondedValidatorsByPower(ctx)
+	return len(vals)
 }

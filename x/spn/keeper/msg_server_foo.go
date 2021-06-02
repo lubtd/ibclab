@@ -4,7 +4,7 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	clienttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/02-client/types"
+	clienttypes "github.com/cosmos/ibc-go/modules/core/02-client/types"
 	"github.com/lubtd/ibclab/x/spn/types"
 )
 

@@ -2,13 +2,13 @@ package spn
 
 import (
 	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
-	channeltypes "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/types"
-	porttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/05-port/types"
-	host "github.com/cosmos/cosmos-sdk/x/ibc/core/24-host"
+	channeltypes "github.com/cosmos/ibc-go/modules/core/04-channel/types"
+	porttypes "github.com/cosmos/ibc-go/modules/core/05-port/types"
+	host "github.com/cosmos/ibc-go/modules/core/24-host"
+	ibcexported "github.com/cosmos/ibc-go/modules/core/exported"
 	"github.com/lubtd/ibclab/x/spn/types"
 )
 
@@ -128,10 +128,10 @@ func (am AppModule) OnChanCloseConfirm(
 func (am AppModule) OnRecvPacket(
 	ctx sdk.Context,
 	modulePacket channeltypes.Packet,
-) (*sdk.Result, []byte, error) {
+) ibcexported.Acknowledgement {
 	var modulePacketData types.SpnPacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		return nil, nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+		return channeltypes.NewErrorAcknowledgement(err.Error())
 	}
 
 	var ack channeltypes.Acknowledgement
@@ -145,10 +145,7 @@ func (am AppModule) OnRecvPacket(
 			ack = channeltypes.NewErrorAcknowledgement(err.Error())
 		} else {
 			// Encode packet acknowledgment
-			packetAckBytes, err := packetAck.Marshal()
-			if err != nil {
-				return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
-			}
+			packetAckBytes, _ := packetAck.Marshal()
 			ack = channeltypes.NewResultAcknowledgement(packetAckBytes)
 		}
 		ctx.EventManager().EmitEvent(
@@ -160,19 +157,11 @@ func (am AppModule) OnRecvPacket(
 		)
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
+		return channeltypes.NewErrorAcknowledgement(errMsg)
 	}
 
 	// Encode acknowledgement
-	ackBytes, err := ack.Marshal()
-	if err != nil {
-		return nil, []byte{}, sdkerrors.Wrap(sdkerrors.ErrInvalidType, err.Error())
-	}
-
-	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
-	return &sdk.Result{
-		Events: ctx.EventManager().Events().ToABCIEvents(),
-	}, ackBytes, nil
+	return ack
 }
 
 // OnAcknowledgementPacket implements the IBCModule interface

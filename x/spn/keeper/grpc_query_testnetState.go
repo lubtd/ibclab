@@ -24,7 +24,7 @@ func (k Keeper) TestnetStateAll(c context.Context, req *types.QueryAllTestnetSta
 
 	pageRes, err := query.Paginate(testnetStateStore, req.Pagination, func(key []byte, value []byte) error {
 		var testnetState types.TestnetState
-		if err := k.cdc.UnmarshalBinaryBare(value, &testnetState); err != nil {
+		if err := k.cdc.Unmarshal(value, &testnetState); err != nil {
 			return err
 		}
 

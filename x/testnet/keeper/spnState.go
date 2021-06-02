@@ -9,7 +9,7 @@ import (
 // SetSpnState set a specific spnState in the store from its index
 func (k Keeper) SetSpnState(ctx sdk.Context, spnState types.SpnState) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SpnStateKey))
-	b := k.cdc.MustMarshalBinaryBare(&spnState)
+	b := k.cdc.MustMarshal(&spnState)
 	store.Set(types.KeyPrefix(spnState.Index), b)
 }
 
@@ -22,7 +22,7 @@ func (k Keeper) GetSpnState(ctx sdk.Context, index string) (val types.SpnState, 
 		return val, false
 	}
 
-	k.cdc.MustUnmarshalBinaryBare(b, &val)
+	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
 
@@ -41,7 +41,7 @@ func (k Keeper) GetAllSpnState(ctx sdk.Context) (list []types.SpnState) {
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.SpnState
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
 
