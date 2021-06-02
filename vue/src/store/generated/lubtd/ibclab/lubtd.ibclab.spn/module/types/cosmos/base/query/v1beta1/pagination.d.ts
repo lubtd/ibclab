@@ -34,6 +34,8 @@ export interface PageRequest {
      * is set.
      */
     countTotal: boolean;
+    /** reverse is set to true indicates that, results to be returned in the descending order. */
+    reverse: boolean;
 }
 /**
  * PageResponse is to be embedded in gRPC response messages where the
