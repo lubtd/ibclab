@@ -39,6 +39,11 @@ func (am AppModule) OnChanOpenInit(
 		return err
 	}
 
+	// Verify client ID
+	if err := am.keeper.VerifyClientID(ctx, channelID); err != nil {
+		return err
+	}
+
 	return nil
 }
 

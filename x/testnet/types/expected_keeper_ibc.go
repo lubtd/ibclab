@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	conntypes "github.com/cosmos/cosmos-sdk/x/ibc/core/03-connection/types"
 	channeltypes "github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/types"
 	ibcexported "github.com/cosmos/cosmos-sdk/x/ibc/core/exported"
 )
@@ -31,4 +32,8 @@ type ClientKeeper interface {
 	CreateClient(ctx sdk.Context, clientState ibcexported.ClientState, consensusState ibcexported.ConsensusState) (string, error)
 	GetClientState(ctx sdk.Context, clientID string) (ibcexported.ClientState, bool)
 	GetLatestClientConsensusState(ctx sdk.Context, clientID string) (ibcexported.ConsensusState, bool)
+}
+
+type ConnectionKeeper interface {
+	GetConnection(ctx sdk.Context, connectionID string) (conntypes.ConnectionEnd, bool)
 }

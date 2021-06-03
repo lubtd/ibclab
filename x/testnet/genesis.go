@@ -30,15 +30,25 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		}
 	}
 
-	timestamp, err := time.Parse(time.RFC3339, "2021-06-03T08:47:14.734876Z")
+	//timestamp, err := time.Parse(time.RFC3339, "2021-06-03T08:47:14.734876Z")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//consensusState := ibctmtypes.ConsensusState{
+	//	NextValidatorsHash: []byte("D3C5C630CCA8CDB937142B2601A7F7131C0A8A1022E7A08729D5714CBA546D77"),
+	//	Root: commitmenttypes.MerkleRoot{
+	//		Hash: []byte("UDVeoH8tPTnDkmuuClwAHjKsJOejfrpoS4s+Xzdjj4M="),
+	//	},
+	//	Timestamp: timestamp,
+	//}
+	timestamp, err := time.Parse(time.RFC3339, "2021-06-03T11:18:53.452570Z")
 	if err != nil {
 		panic(err)
 	}
-
 	consensusState := ibctmtypes.ConsensusState{
-		NextValidatorsHash: []byte("D3C5C630CCA8CDB937142B2601A7F7131C0A8A1022E7A08729D5714CBA546D77"),
+		NextValidatorsHash: []byte("C1E29228614BEDD523145FE627F9FF86D18F0270D6B3F55585EA414E2B7F12A3"),
 		Root: commitmenttypes.MerkleRoot{
-			Hash: []byte("UDVeoH8tPTnDkmuuClwAHjKsJOejfrpoS4s+Xzdjj4M="),
+			Hash: []byte("/Sm44T4A/EaGL8sC930qjQHPwH591GMZaUVMd6RWQOw="),
 		},
 		Timestamp: timestamp,
 	}

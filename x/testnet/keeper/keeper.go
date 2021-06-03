@@ -20,6 +20,7 @@ type (
 		portKeeper    types.PortKeeper
 		scopedKeeper  types.ScopedKeeper
 		ClientKeeper  types.ClientKeeper
+		connectionKeeper types.ConnectionKeeper
 	}
 )
 
@@ -31,6 +32,7 @@ func NewKeeper(
 	portKeeper types.PortKeeper,
 	scopedKeeper types.ScopedKeeper,
 	clientKeeper types.ClientKeeper,
+	connectionKeeper types.ConnectionKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:           cdc,
@@ -40,6 +42,7 @@ func NewKeeper(
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
 		ClientKeeper:  clientKeeper,
+		connectionKeeper: connectionKeeper,
 	}
 }
 
