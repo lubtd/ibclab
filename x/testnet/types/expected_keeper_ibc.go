@@ -26,3 +26,9 @@ type ScopedKeeper interface {
 	AuthenticateCapability(ctx sdk.Context, cap *capabilitytypes.Capability, name string) bool
 	ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capability, name string) error
 }
+
+type ClientKeeper interface {
+	CreateClient(ctx sdk.Context, clientState ibcexported.ClientState, consensusState ibcexported.ConsensusState) (string, error)
+	GetClientState(ctx sdk.Context, clientID string) (ibcexported.ClientState, bool)
+	GetLatestClientConsensusState(ctx sdk.Context, clientID string) (ibcexported.ConsensusState, bool)
+}

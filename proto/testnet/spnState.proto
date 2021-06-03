@@ -8,4 +8,5 @@ import "gogoproto/gogo.proto";
 message SpnState {
   string creator = 1;
   string index = 2;
+  string clientID = 3;
 }

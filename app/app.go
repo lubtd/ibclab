@@ -345,6 +345,7 @@ func New(
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedTestnetKeeper,
+		app.IBCKeeper.ClientKeeper,
 	)
 	testnetModule := testnet.NewAppModule(appCodec, app.TestnetKeeper)
 	scopedSpnKeeper := app.CapabilityKeeper.ScopeToModule(spntypes.ModuleName)
