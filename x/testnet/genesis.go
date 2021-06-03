@@ -2,10 +2,12 @@ package testnet
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	clienttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/02-client/types"
 	commitmenttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/23-commitment/types"
 	ibctmtypes "github.com/cosmos/cosmos-sdk/x/ibc/light-clients/07-tendermint/types"
 	"github.com/lubtd/ibclab/x/testnet/keeper"
 	"github.com/lubtd/ibclab/x/testnet/types"
+	"github.com/tendermint/tendermint/light"
 	"time"
 )
 
@@ -45,15 +47,29 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if err != nil {
 		panic(err)
 	}
-	consensusState := ibctmtypes.ConsensusState{
-		NextValidatorsHash: []byte("C1E29228614BEDD523145FE627F9FF86D18F0270D6B3F55585EA414E2B7F12A3"),
-		Root: commitmenttypes.MerkleRoot{
+	consensusState := ibctmtypes.NewConsensusState(
+		timestamp,
+		commitmenttypes.MerkleRoot{
 			Hash: []byte("/Sm44T4A/EaGL8sC930qjQHPwH591GMZaUVMd6RWQOw="),
 		},
-		Timestamp: timestamp,
-	}
+		[]byte("C1E29228614BEDD523145FE627F9FF86D18F0270D6B3F55585EA414E2B7F12A3"),
+	)
 
-	clientID, err := k.ClientKeeper.CreateClient(ctx, &ibctmtypes.ClientState{}, &consensusState)
+	clientState := ibctmtypes.NewClientState(
+		"testnet",
+		ibctmtypes.NewFractionFromTm(light.DefaultTrustLevel),
+		1209600 * time.Second,
+		1814400 * time.Second,
+		time.Minute*10,
+		clienttypes.NewHeight(0, 0),
+		commitmenttypes.GetSDKSpecs(),
+		[]string{"upgrade", "upgradedIBCState"},
+		false,
+		false,
+	)
+
+
+	clientID, err := k.ClientKeeper.CreateClient(ctx, clientState, consensusState)
 	if err != nil {
 		panic(err)
 	}
