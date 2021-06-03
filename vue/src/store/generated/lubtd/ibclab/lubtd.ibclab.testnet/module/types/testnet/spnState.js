@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Writer, Reader } from 'protobufjs/minimal';
 export const protobufPackage = 'lubtd.ibclab.testnet';
-const baseSpnState = { creator: '', index: '' };
+const baseSpnState = { creator: '', index: '', clientID: '' };
 export const SpnState = {
     encode(message, writer = Writer.create()) {
         if (message.creator !== '') {
@@ -9,6 +9,9 @@ export const SpnState = {
         }
         if (message.index !== '') {
             writer.uint32(18).string(message.index);
+        }
+        if (message.clientID !== '') {
+            writer.uint32(26).string(message.clientID);
         }
         return writer;
     },
@@ -24,6 +27,9 @@ export const SpnState = {
                     break;
                 case 2:
                     message.index = reader.string();
+                    break;
+                case 3:
+                    message.clientID = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -46,12 +52,19 @@ export const SpnState = {
         else {
             message.index = '';
         }
+        if (object.clientID !== undefined && object.clientID !== null) {
+            message.clientID = String(object.clientID);
+        }
+        else {
+            message.clientID = '';
+        }
         return message;
     },
     toJSON(message) {
         const obj = {};
         message.creator !== undefined && (obj.creator = message.creator);
         message.index !== undefined && (obj.index = message.index);
+        message.clientID !== undefined && (obj.clientID = message.clientID);
         return obj;
     },
     fromPartial(object) {
@@ -67,6 +80,12 @@ export const SpnState = {
         }
         else {
             message.index = '';
+        }
+        if (object.clientID !== undefined && object.clientID !== null) {
+            message.clientID = object.clientID;
+        }
+        else {
+            message.clientID = '';
         }
         return message;
     }

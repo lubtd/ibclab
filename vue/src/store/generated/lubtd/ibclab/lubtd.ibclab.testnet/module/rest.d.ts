@@ -29,6 +29,7 @@ export interface TestnetQueryGetSpnStateResponse {
 export interface TestnetSpnState {
     creator?: string;
     index?: string;
+    clientID?: string;
 }
 /**
 * message SomeRequest {

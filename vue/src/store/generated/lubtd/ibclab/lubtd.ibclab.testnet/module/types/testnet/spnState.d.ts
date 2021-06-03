@@ -3,6 +3,7 @@ export declare const protobufPackage = "lubtd.ibclab.testnet";
 export interface SpnState {
     creator: string;
     index: string;
+    clientID: string;
 }
 export declare const SpnState: {
     encode(message: SpnState, writer?: Writer): Writer;

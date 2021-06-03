@@ -6,9 +6,10 @@ export const protobufPackage = 'lubtd.ibclab.testnet'
 export interface SpnState {
   creator: string
   index: string
+  clientID: string
 }
 
-const baseSpnState: object = { creator: '', index: '' }
+const baseSpnState: object = { creator: '', index: '', clientID: '' }
 
 export const SpnState = {
   encode(message: SpnState, writer: Writer = Writer.create()): Writer {
@@ -17,6 +18,9 @@ export const SpnState = {
     }
     if (message.index !== '') {
       writer.uint32(18).string(message.index)
+    }
+    if (message.clientID !== '') {
+      writer.uint32(26).string(message.clientID)
     }
     return writer
   },
@@ -33,6 +37,9 @@ export const SpnState = {
           break
         case 2:
           message.index = reader.string()
+          break
+        case 3:
+          message.clientID = reader.string()
           break
         default:
           reader.skipType(tag & 7)
@@ -54,6 +61,11 @@ export const SpnState = {
     } else {
       message.index = ''
     }
+    if (object.clientID !== undefined && object.clientID !== null) {
+      message.clientID = String(object.clientID)
+    } else {
+      message.clientID = ''
+    }
     return message
   },
 
@@ -61,6 +73,7 @@ export const SpnState = {
     const obj: any = {}
     message.creator !== undefined && (obj.creator = message.creator)
     message.index !== undefined && (obj.index = message.index)
+    message.clientID !== undefined && (obj.clientID = message.clientID)
     return obj
   },
 
@@ -75,6 +88,11 @@ export const SpnState = {
       message.index = object.index
     } else {
       message.index = ''
+    }
+    if (object.clientID !== undefined && object.clientID !== null) {
+      message.clientID = object.clientID
+    } else {
+      message.clientID = ''
     }
     return message
   }
