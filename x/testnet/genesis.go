@@ -43,16 +43,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	//	},
 	//	Timestamp: timestamp,
 	//}
-	timestamp, err := time.Parse(time.RFC3339, "2021-06-03T11:18:53.452570Z")
+	timestamp, err := time.Parse(time.RFC3339, "2021-06-04T07:31:52.740319Z")
 	if err != nil {
 		panic(err)
 	}
 	consensusState := ibctmtypes.NewConsensusState(
 		timestamp,
-		commitmenttypes.MerkleRoot{
-			Hash: []byte("/Sm44T4A/EaGL8sC930qjQHPwH591GMZaUVMd6RWQOw="),
-		},
-		[]byte("C1E29228614BEDD523145FE627F9FF86D18F0270D6B3F55585EA414E2B7F12A3"),
+		commitmenttypes.NewMerkleRoot([]byte("2gfxiCQ4xHAm948Qm9oNSVDVQ31QONKCsfe/dS9B05A=")),
+		[]byte("4D52FE990913CCA4160AF4A553A8ABA1EFBD1CC0331906772A33A2F6396A592D"),
 	)
 
 	clientState := ibctmtypes.NewClientState(
