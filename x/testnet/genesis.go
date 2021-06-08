@@ -34,23 +34,12 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		}
 	}
 
-	//timestamp, err := time.Parse(time.RFC3339, "2021-06-03T08:47:14.734876Z")
-	//if err != nil {
-	//	panic(err)
-	//}
-	//consensusState := ibctmtypes.ConsensusState{
-	//	NextValidatorsHash: []byte("D3C5C630CCA8CDB937142B2601A7F7131C0A8A1022E7A08729D5714CBA546D77"),
-	//	Root: commitmenttypes.MerkleRoot{
-	//		Hash: []byte("UDVeoH8tPTnDkmuuClwAHjKsJOejfrpoS4s+Xzdjj4M="),
-	//	},
-	//	Timestamp: timestamp,
-	//}
-	timestamp, err := time.Parse(time.RFC3339, "2021-06-04T07:31:52.740319Z")
+	timestamp, err := time.Parse(time.RFC3339, "2021-06-08T13:32:47.164930Z")
 	if err != nil {
 		panic(err)
 	}
-	nextValSetHash, _ := hex.DecodeString("4D52FE990913CCA4160AF4A553A8ABA1EFBD1CC0331906772A33A2F6396A592D")
-	rootHash, _ := base64.StdEncoding.DecodeString("2gfxiCQ4xHAm948Qm9oNSVDVQ31QONKCsfe/dS9B05A=")
+	nextValSetHash, _ := hex.DecodeString("AA91D1BADE40BC9E0D5577B570FE133A24D35229671173C05EA0463C0CEB3E51")
+	rootHash, _ := base64.StdEncoding.DecodeString("g2ZaAj5ZnEFVmQaQEb+Jd/zzWtOJkenBJ0NakQvQfXo=")
 	consensusState := ibctmtypes.NewConsensusState(
 		timestamp,
 		commitmenttypes.NewMerkleRoot(rootHash),
@@ -63,7 +52,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		1209600 * time.Second,
 		1814400 * time.Second,
 		time.Minute*10,
-		clienttypes.NewHeight(0, 0),
+		clienttypes.NewHeight(0, 4),
 		commitmenttypes.GetSDKSpecs(),
 		[]string{"upgrade", "upgradedIBCState"},
 		false,
