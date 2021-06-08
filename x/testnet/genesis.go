@@ -1,6 +1,8 @@
 package testnet
 
 import (
+	"encoding/base64"
+	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	clienttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/02-client/types"
 	commitmenttypes "github.com/cosmos/cosmos-sdk/x/ibc/core/23-commitment/types"
@@ -47,10 +49,12 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if err != nil {
 		panic(err)
 	}
+	nextValSetHash, _ := hex.DecodeString("4D52FE990913CCA4160AF4A553A8ABA1EFBD1CC0331906772A33A2F6396A592D")
+	rootHash, _ := base64.StdEncoding.DecodeString("2gfxiCQ4xHAm948Qm9oNSVDVQ31QONKCsfe/dS9B05A=")
 	consensusState := ibctmtypes.NewConsensusState(
 		timestamp,
-		commitmenttypes.NewMerkleRoot([]byte("2gfxiCQ4xHAm948Qm9oNSVDVQ31QONKCsfe/dS9B05A=")),
-		[]byte("4D52FE990913CCA4160AF4A553A8ABA1EFBD1CC0331906772A33A2F6396A592D"),
+		commitmenttypes.NewMerkleRoot(rootHash),
+		nextValSetHash,
 	)
 
 	clientState := ibctmtypes.NewClientState(
